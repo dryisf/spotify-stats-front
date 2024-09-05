@@ -1,6 +1,6 @@
-import { getLocalStorageRefreshToken } from "utils/localStorage";
+import { getLocalStorageRefreshToken } from 'utils/localStorage';
 
-import { API_URL } from "./";
+import { API_URL } from './';
 
 export const getSpotifyAuthorizationPageLink = async (redirectUri: string) => {
   const response = await fetch(`${API_URL}/login?redirectUri=${redirectUri}`);
@@ -16,17 +16,17 @@ export const getSpotifyAuthorizationPageLink = async (redirectUri: string) => {
 
 export const getAccessToken = async (
   redirectUri: string,
-  authorizationCode: string
+  authorizationCode: string,
 ) => {
   const response = await fetch(
-    `${API_URL}/token?redirectUri=${redirectUri}&code=${authorizationCode}`
+    `${API_URL}/token?redirectUri=${redirectUri}&code=${authorizationCode}`,
   );
   return await response.json();
 };
 
 export const refreshAccessToken = async () => {
   const refreshToken = getLocalStorageRefreshToken();
-  const response = await fetch(`${API_URL}/refreshToken`, {
+  const response = await fetch(`${API_URL}/token/refresh`, {
     headers: {
       Authorization: `Bearer ${refreshToken}`,
     },
