@@ -1,11 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { getArtists } from "api/artists";
+import { useQuery } from '@tanstack/react-query';
+import { getArtists } from 'api/artists';
+import { SpotifyTimeRange } from 'types';
 
-const useGetArtists = (enabled: boolean) => {
+const useGetArtists = (enabled: boolean, timeRange: SpotifyTimeRange) => {
   const { data: { artists = [] } = {}, isLoading: areArtistsLoading } =
     useQuery({
-      queryFn: () => getArtists(),
-      queryKey: ["artists"],
+      queryFn: () => getArtists(timeRange),
+      queryKey: ['artists', timeRange],
       enabled,
     });
 

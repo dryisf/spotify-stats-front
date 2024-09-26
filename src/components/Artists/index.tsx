@@ -1,26 +1,27 @@
-import { Artist } from 'types';
+import { useState } from 'react';
 import useGetArtists from 'hooks/useGetArtists';
 import useAuth from 'hooks/useAuth';
+import { SpotifyTimeRange as SpotifyTimeRangeEnum } from 'enums';
+import ItemsList from 'components/ItemsList';
+import { SpotifyTimeRange } from 'types';
 
 function Artists() {
+  const [timeRange, setTimeRange] = useState<SpotifyTimeRange>(
+    SpotifyTimeRangeEnum.shortTerm,
+  );
+
   const { isLoggedIn } = useAuth();
 
-  const { artists, areArtistsLoading } = useGetArtists(isLoggedIn);
+  const { artists, areArtistsLoading } = useGetArtists(isLoggedIn, timeRange);
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-12">
-      {areArtistsLoading && <div>Artists are loading...</div>}
-      {Boolean(artists.length) && (
-        <div className="flex flex-wrap items-center justify-center gap-6">
-          {artists.map((artist: Artist) => (
-            <div key={artist.id} className="flex flex-col gap-1">
-              <img className="h-96 w-auto" src={artist.images[0].url}></img>
-              <p>{artist.name}</p>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    <ItemsList
+      items={artists}
+      loading={areArtistsLoading}
+      setTimeRange={setTimeRange}
+      timeRange={timeRange}
+      title="Top Artists"
+    />
   );
 }
 

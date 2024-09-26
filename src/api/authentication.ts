@@ -1,9 +1,14 @@
 import { getLocalStorageRefreshToken } from 'utils/localStorage';
+import qs from 'qs';
 
 import { API_URL } from './';
 
 export const getSpotifyAuthorizationPageLink = async (redirectUri: string) => {
-  const response = await fetch(`${API_URL}/login?redirectUri=${redirectUri}`);
+  const response = await fetch(
+    `${API_URL}/login?${qs.stringify({
+      redirectUri,
+    })}`,
+  );
 
   const { authorizationUrl } = await response.json();
 
@@ -19,7 +24,10 @@ export const getAccessToken = async (
   authorizationCode: string,
 ) => {
   const response = await fetch(
-    `${API_URL}/token?redirectUri=${redirectUri}&code=${authorizationCode}`,
+    `${API_URL}/token?${qs.stringify({
+      redirectUri,
+      code: authorizationCode,
+    })}`,
   );
   return await response.json();
 };

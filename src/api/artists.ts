@@ -1,13 +1,20 @@
-import { getLocalStorageAccessToken } from "utils/localStorage";
+import { getLocalStorageAccessToken } from 'utils/localStorage';
+import qs from 'qs';
 
-import { API_URL } from "./index";
+import { API_URL } from './index';
+import { SpotifyTimeRange } from 'types';
 
-export const getArtists = async () => {
+export const getArtists = async (timeRange: SpotifyTimeRange) => {
   const accessToken = getLocalStorageAccessToken();
-  const response = await fetch(`${API_URL}/artists`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
+  const response = await fetch(
+    `${API_URL}/artists?${qs.stringify({
+      timeRange,
+    })}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
-  });
+  );
   return await response.json();
 };
