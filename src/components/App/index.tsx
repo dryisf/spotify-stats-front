@@ -6,23 +6,28 @@ import Home from 'components/Home';
 import Navbar from 'components/Navbar';
 import Artists from 'components/Artists';
 import Tracks from 'components/Tracks';
+import Genres from 'components/Genres';
+import AuthProvider from 'components/AuthProvider';
 
 function App() {
   const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex flex-col">
-        <Navbar />
-        <div className="m-6">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/artists" element={<Artists />} />
-            <Route path="/tracks" element={<Tracks />} />
-          </Routes>
+      <AuthProvider>
+        <div className="flex flex-col">
+          <Navbar />
+          <div className="m-6">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/artists" element={<Artists />} />
+              <Route path="/tracks" element={<Tracks />} />
+              <Route path="/genres" element={<Genres />} />
+            </Routes>
+          </div>
         </div>
-      </div>
-      <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

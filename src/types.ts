@@ -6,6 +6,10 @@ export interface Item {
   images: { height: number; url: string; width: number }[];
 }
 
+export interface Artist extends Item {
+  genres: string[];
+}
+
 export interface Track extends Item {
   artists: {
     id: string;

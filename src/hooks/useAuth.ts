@@ -1,87 +1,9 @@
-import { DateTime } from 'luxon';
-import { useEffect, useMemo, useState } from 'react';
+import { useContext } from 'react';
 
-import {
-  getLocalStorageAccessToken,
-  getLocalStorageAccessTokenExpirationDate,
-  setLocalStorageAccessToken,
-  setLocalStorageAccessTokenExpirationDate,
-  setLocalStorageRefreshToken,
-} from 'utils/localStorage';
-
-import useGetSpotifyAccessToken from './useGetSpotifyAccessToken';
-import useRefreshSpotifyAccessToken from './useRefreshAccessToken';
+import { AuthContext } from 'components/AuthProvider';
 
 const useAuth = () => {
-  const [userAccessToken, setUserAccessToken] = useState<string>('');
-  const searchParams = new URLSearchParams(window.location.search);
-
-  const localStorageAccessTokenExpirationDate =
-    getLocalStorageAccessTokenExpirationDate();
-
-  const shouldRefreshAccessToken = useMemo(
-    () =>
-      DateTime.fromISO(localStorageAccessTokenExpirationDate).ts <
-      DateTime.now().ts,
-    [localStorageAccessTokenExpirationDate],
-  );
-
-  const {
-    accessToken,
-    refreshToken,
-    accessTokenExpirationDate,
-    isFetchingAccessToken,
-  } = useGetSpotifyAccessToken(searchParams?.get('code'));
-
-  const {
-    accessToken: newAccessToken,
-    accessTokenExpirationDate: newAccessTokenExpirationDate,
-    isRefreshingAccessToken,
-  } = useRefreshSpotifyAccessToken(shouldRefreshAccessToken);
-
-  const isLoggedIn: boolean = useMemo(
-    () => Boolean(userAccessToken) && !shouldRefreshAccessToken,
-    [userAccessToken, shouldRefreshAccessToken],
-  );
-
-  const isAuthLoading: boolean = useMemo(
-    () => isFetchingAccessToken || isRefreshingAccessToken,
-    [isFetchingAccessToken, isRefreshingAccessToken],
-  );
-
-  useEffect(() => {
-    if (shouldRefreshAccessToken) {
-      return;
-    }
-
-    const localStorageAccessToken = getLocalStorageAccessToken();
-
-    if (localStorageAccessToken) {
-      setUserAccessToken(localStorageAccessToken);
-    }
-  }, [shouldRefreshAccessToken]);
-
-  useEffect(() => {
-    if (accessToken && refreshToken && accessTokenExpirationDate) {
-      setLocalStorageAccessToken(accessToken);
-      setUserAccessToken(accessToken);
-      setLocalStorageRefreshToken(refreshToken);
-      setLocalStorageAccessTokenExpirationDate(accessTokenExpirationDate);
-    }
-  }, [accessToken, refreshToken, accessTokenExpirationDate]);
-
-  useEffect(() => {
-    if (newAccessToken && newAccessTokenExpirationDate) {
-      setLocalStorageAccessToken(newAccessToken);
-      setUserAccessToken(newAccessToken);
-      setLocalStorageAccessTokenExpirationDate(newAccessTokenExpirationDate);
-    }
-  }, [newAccessToken, newAccessTokenExpirationDate]);
-
-  return {
-    isLoggedIn,
-    isAuthLoading,
-  };
+  return useContext(AuthContext);
 };
 
 export default useAuth;

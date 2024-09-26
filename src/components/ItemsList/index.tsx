@@ -1,22 +1,25 @@
 import { SpotifyTimeRange as SpotifyTimeRangeEnum } from 'enums';
 import { Item, SpotifyTimeRange } from 'types';
 import { getLabelFromTimeRange } from './utils';
+import { FC, ReactNode } from 'react';
 
-interface ComponentProps {
-  items: Item[];
+type ComponentProps = {
+  items?: Item[];
   loading: boolean;
   title: string;
   timeRange: SpotifyTimeRange;
   setTimeRange: (timeRange: SpotifyTimeRange) => void;
-}
+  children?: ReactNode;
+};
 
-export default function ItemsList({
+const ItemsList: FC<ComponentProps> = ({
   items,
   loading,
   title,
   timeRange,
   setTimeRange,
-}: ComponentProps) {
+  children,
+}) => {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-8">
       <div className="flex justify-center">
@@ -30,7 +33,7 @@ export default function ItemsList({
         ))}
       </div>
       {loading && <div>Loading...</div>}
-      {Boolean(items.length) && (
+      {items?.length ? (
         <div className="flex flex-wrap items-center justify-center gap-6">
           {items.map((item: Item) => (
             <div key={item.id} className="flex flex-col gap-1">
@@ -39,7 +42,11 @@ export default function ItemsList({
             </div>
           ))}
         </div>
+      ) : (
+        children
       )}
     </div>
   );
-}
+};
+
+export default ItemsList;

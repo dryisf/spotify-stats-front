@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import useAuth from 'hooks/useAuth';
 
 function Navbar() {
-  const { isLoggedIn, isAuthLoading } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   const onClick = useCallback(() => {}, []);
 
@@ -18,7 +18,12 @@ function Navbar() {
         <li>
           <NavLink to="/tracks">Tracks</NavLink>
         </li>
-        <button>{isLoggedIn ? 'Account' : 'Se connecter'}</button>
+        <li>
+          <NavLink to="/genres">Genres</NavLink>
+        </li>
+        <button onClick={onClick}>
+          {isLoggedIn ? 'Account' : 'Se connecter'}
+        </button>
       </ul>
     </nav>
   );
