@@ -3,7 +3,9 @@ import qs from 'qs';
 
 import { API_URL } from './';
 
-export const getSpotifyAuthorizationPageLink = async (redirectUri: string) => {
+const redirectUri = `${window.location.origin}${window.location.pathname}`;
+
+export const getSpotifyAuthorizationPageLink = async () => {
   const response = await fetch(
     `${API_URL}/login?${qs.stringify({
       redirectUri,
@@ -19,10 +21,7 @@ export const getSpotifyAuthorizationPageLink = async (redirectUri: string) => {
   return authorizationUrl;
 };
 
-export const getAccessToken = async (
-  redirectUri: string,
-  authorizationCode: string,
-) => {
+export const getAccessToken = async (authorizationCode: string) => {
   const response = await fetch(
     `${API_URL}/token?${qs.stringify({
       redirectUri,

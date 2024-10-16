@@ -1,17 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-import { getAccessToken } from "api/authentication";
+import { useQuery } from '@tanstack/react-query';
+import { getAccessToken } from 'api/authentication';
 
 const useGetSpotifyAccessToken = (authorizationCode: string | null) => {
   const {
     data: { accessToken, refreshToken, accessTokenExpirationDate } = {},
     isLoading: isFetchingAccessToken,
   } = useQuery({
-    queryFn: () =>
-      getAccessToken(
-        import.meta.env.VITE_SPOTIFY_REDIRECT_URI,
-        authorizationCode || ""
-      ),
-    queryKey: ["accessToken", authorizationCode],
+    queryFn: () => getAccessToken(authorizationCode || ''),
+    queryKey: ['accessToken', authorizationCode],
     enabled: Boolean(authorizationCode),
   });
 
