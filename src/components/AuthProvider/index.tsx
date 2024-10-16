@@ -37,8 +37,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const shouldRefreshAccessToken = useMemo(
     () =>
-      DateTime.fromISO(localStorageAccessTokenExpirationDate).ts <
-      DateTime.now().ts,
+      DateTime.fromISO(localStorageAccessTokenExpirationDate) < DateTime.now(),
     [localStorageAccessTokenExpirationDate],
   );
 

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import { NavLink } from 'react-router-dom';
 
 import useAuth from 'hooks/useAuth';
+import Link from './Link';
 
 function Navbar() {
   const { isLoggedIn } = useAuth();
@@ -10,16 +10,16 @@ function Navbar() {
 
   return (
     <nav className="flex items-center justify-between bg-red-400 p-4">
-      <NavLink to="/">My Spotify Stats</NavLink>
+      <Link to="/" title="My Spotify Stats" />
       <ul className="flex items-center gap-6">
         <li>
-          <NavLink to="/artists">Artists</NavLink>
+          <Link to="/artists" title="Artists" />
         </li>
         <li>
-          <NavLink to="/tracks">Tracks</NavLink>
+          <Link to="/tracks" title="Tracks" />
         </li>
         <li>
-          <NavLink to="/genres">Genres</NavLink>
+          <Link to="/genres" title="Genres" />
         </li>
         <button onClick={onClick}>
           {isLoggedIn ? 'Account' : 'Se connecter'}
