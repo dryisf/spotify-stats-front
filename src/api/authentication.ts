@@ -1,5 +1,5 @@
-import { getLocalStorageRefreshToken } from 'utils/localStorage';
 import qs from 'qs';
+import { getLocalStorageRefreshToken } from 'utils/localStorage';
 
 import { API_URL } from './';
 
@@ -12,7 +12,7 @@ export const getSpotifyAuthorizationPageLink = async () => {
     })}`,
   );
 
-  const { authorizationUrl } = await response.json();
+  const { data: authorizationUrl } = await response.json();
 
   if (authorizationUrl) {
     window.location.href = authorizationUrl;
@@ -28,7 +28,9 @@ export const getAccessToken = async (authorizationCode: string) => {
       code: authorizationCode,
     })}`,
   );
-  return await response.json();
+
+  const { data } = await response.json();
+  return data;
 };
 
 export const refreshAccessToken = async () => {
@@ -38,5 +40,7 @@ export const refreshAccessToken = async () => {
       Authorization: `Bearer ${refreshToken}`,
     },
   });
-  return await response.json();
+
+  const { data } = await response.json();
+  return data;
 };

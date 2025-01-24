@@ -1,8 +1,8 @@
-import { getLocalStorageAccessToken } from 'utils/localStorage';
 import qs from 'qs';
+import { getLocalStorageAccessToken } from 'utils/localStorage';
 
-import { API_URL } from './index';
 import { SpotifyTimeRange } from 'types';
+import { API_URL } from './index';
 
 export const getArtists = async (timeRange: SpotifyTimeRange) => {
   const accessToken = getLocalStorageAccessToken();
@@ -16,5 +16,8 @@ export const getArtists = async (timeRange: SpotifyTimeRange) => {
       },
     },
   );
-  return await response.json();
+
+  const { data } = await response.json();
+
+  return data;
 };
